@@ -1,12 +1,11 @@
 {
-  "name": "gitgud",
+  "name": "electronbuild",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
@@ -25,7 +24,6 @@
   "devDependencies": {
     "@types/jest": "^24.0.19",
     "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-e2e-cypress": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",
     "@vue/cli-plugin-typescript": "^4.1.0",
