@@ -4,20 +4,14 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Install npm packages
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: install
-    - name: Build the project
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: build
-    - name: Rub unit tests
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: test:unit
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: npm i -g yarn
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test:unit
