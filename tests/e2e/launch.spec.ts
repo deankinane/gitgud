@@ -23,11 +23,7 @@ describe("Main Window", () => {
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
-    expect(
-      /Welcome to Your Vue\.js (\+ TypeScript )?App/.test(
-        await client.getHTML("#app")
-      )
-    ).toBe(true);
+    expect(await client.isExisting("#app")).toBe(true);
 
     stopServe();
   });
