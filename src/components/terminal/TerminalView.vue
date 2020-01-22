@@ -10,13 +10,16 @@ require("xterm/css/xterm.css");
 
 @Component
 export default class TerminalView extends Vue {
-  private terminalShell: Terminal | null = null;
+  private terminalShell?: Terminal;
+
+  created() {
+    this.terminalShell = new Terminal(null);
+  }
 
   mounted() {
-    this.terminalShell = new Terminal(
-      this.$refs["terminal-container"] as HTMLElement,
-      null
-    );
+    if (this.terminalShell) {
+      this.terminalShell.mount(this.$refs["terminal-container"] as HTMLElement);
+    }
   }
 }
 </script>
