@@ -7,8 +7,9 @@ export default class Terminal {
   private cwd: string = "c:/";
   private xtermElement?: HTMLElement;
 
-  constructor(workingDirectory: string | null) {
-    this.cwd = workingDirectory === null ? this.cwd : workingDirectory;
+  constructor(element: HTMLElement, workingDirectory?: string) {
+    this.xtermElement = element;
+    this.cwd = workingDirectory || this.cwd;
 
     this.xterm = new xterm({
       cursorStyle: "bar",
@@ -16,6 +17,8 @@ export default class Terminal {
       windowsMode: true,
       logLevel: "debug"
     });
+
+    this.xterm.open(this.xtermElement);
 
     this.shell = spawnPty("bash.exe", [], {
       name: "xterm-color",
@@ -27,10 +30,5 @@ export default class Terminal {
       this.xterm.write(data);
     });
     this.xterm.onData(data => this.shell.write(data));
-  }
-
-  public mount(element: HTMLElement) {
-    this.xtermElement = element;
-    this.xterm.open(this.xtermElement);
   }
 }

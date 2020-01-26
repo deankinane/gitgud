@@ -1,4 +1,4 @@
-# electronbuild
+# builder
 
 ## Project setup
 ```
