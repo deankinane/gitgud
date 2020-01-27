@@ -66,6 +66,6 @@ workflows:
       - unit_test
       - e2e_test
       - build
-        requires:
-          - unit_test
-          - e2e_test
+          requires:
+            - unit_test
+            - e2e_test
