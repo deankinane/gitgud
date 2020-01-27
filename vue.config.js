@@ -2,7 +2,12 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
-      externals: ["node-pty"]
+      externals: ["node-pty"],
+      builderOptions: {
+        win: {
+          target: "squirrel"
+        }
+      }
     }
   }
 };
