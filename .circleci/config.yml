@@ -65,7 +65,7 @@ workflows:
     jobs:
       - unit_test
       - e2e_test
-      - build
+      - build:
           requires:
             - unit_test
             - e2e_test
