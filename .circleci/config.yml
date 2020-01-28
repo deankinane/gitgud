@@ -71,20 +71,14 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /workspace
+          at: workspace
       - run: ls workspace
-      - run: ls workspace/dist_electron
 workflows:
   version: 2
 
   main:
     jobs:
-      - unit_test
-      - e2e_test
-      - build:
-          requires:
-            - unit_test
-            - e2e_test
+      - build
       - deploy:
           requires:
             - build
