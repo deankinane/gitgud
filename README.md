@@ -1,29 +1,5 @@
-# builder
+# GitGud
 
-## Project setup
-```
-yarn install
-```
+A different type of Git client
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[![deankinane](https://circleci.com/gh/deankinane/gitgud.svg?style=svg)](https://app.circleci.com/github/deankinane/gitgud/pipelines)
