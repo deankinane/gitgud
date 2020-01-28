@@ -80,7 +80,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: yarn install
-      - run: yarn build --win
+      - run: yarn build
       - run: mkdir -p workspace/dist/linux
       - run: mv dist_electron workspace/dist/linux
       - persist_to_workspace:
