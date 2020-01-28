@@ -57,6 +57,12 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn build
+      - run: mkdir -p workspace/dist
+      - run: mv dist_electron/squirrel-windows/*.* /workspace/dist/
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - dist
 
 workflows:
   version: 2
