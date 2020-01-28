@@ -67,7 +67,8 @@ jobs:
           root: workspace
           paths:
             - dist
-    build_for_linux:
+
+  build_for_linux:
     docker:
       - image: circleci/node:12.14.1
     working_directory: ~/repo
