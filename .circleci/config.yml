@@ -44,7 +44,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test:e2e
 
-  build:
+  build_for_windows:
     executor: win/default
     working_directory: ~/repo
     steps:
@@ -58,11 +58,30 @@ jobs:
       - run: yarn install
       - run: yarn build --win
       - run:
-          command: mkdir -p workspace/dist
+          command: mkdir -p workspace/dist/windows
           shell: bash
       - run:
-          command: mv dist_electron workspace/dist
+          command: mv dist_electron workspace/dist/windows
           shell: bash
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - dist
+    build_for_linux:
+    docker:
+      - image: circleci/node:12.14.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: yarn install
+      - run: yarn build --win
+      - run: mkdir -p workspace/dist/linux
+      - run: mv dist_electron workspace/dist/linux
       - persist_to_workspace:
           root: workspace
           paths:
@@ -83,13 +102,18 @@ workflows:
     jobs:
       - unit_test
       - e2e_test
-      - build:
+      - build_for_windows:
+          requires:
+            - unit_test
+            - e2e_test
+      - build_for_linux:
           requires:
             - unit_test
             - e2e_test
       - deploy:
           requires:
-            - build
+            - build_for_windows
+            - build_for_linux
           filters:
             tags:
               only: /^\d+\.\d+\.\d+[\-a-z]*$/
