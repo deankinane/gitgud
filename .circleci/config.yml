@@ -42,7 +42,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:12.14.1
+      - image: circleci/node:12.14.1-browsers
     working_directory: ~/repo
     steps:
       - checkout
@@ -64,6 +64,16 @@ jobs:
           paths:
             - dist
 
+  deploy:
+    docker:
+      - image: circleci/node:12.14.1-browsers
+    working_directory: ~/build
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /workspace
+      - run: ls workspace
+      - run: ls workspace/dist_electron
 workflows:
   version: 2
 
@@ -75,3 +85,6 @@ workflows:
           requires:
             - unit_test
             - e2e_test
+      - deploy:
+          requires:
+            - build
