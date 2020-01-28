@@ -56,7 +56,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn build
+      - run: yarn build --win
       - run: mkdir -p workspace/dist
       - run: mv dist_electron workspace/dist
       - persist_to_workspace:
@@ -66,11 +66,10 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:12.14.1-browsers
+      - image: cibuilds/github:0.10
     working_directory: ~/build
     steps:
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: workspace
       - run: ls workspace/dist/dist_electron
 workflows:
@@ -87,3 +86,6 @@ workflows:
       - deploy:
           requires:
             - build
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+[\-a-z]*$/
