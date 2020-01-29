@@ -118,6 +118,6 @@ workflows:
             - build_for_linux
           filters:
             branches:
-              ignore: /*/
+              ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+[\-a-z]*$/
