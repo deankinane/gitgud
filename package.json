@@ -13,7 +13,9 @@
     "build": "vue-cli-service electron:build",
     "serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "preversion": "yarn test:unit && yarn:test:e2e",
+    "postversion": "git push && git push --tags"
   },
   "main": "background.js",
   "dependencies": {
