@@ -42,7 +42,8 @@ jobs:
       - run: yarn test:e2e
 
   build_for_windows:
-    executor: electronuserland/builder:wine-mono
+    docker:
+      - image: electronuserland/builder:wine-mono
     working_directory: ~/repo
     steps:
       - checkout
