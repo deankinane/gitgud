@@ -73,6 +73,7 @@ jobs:
       - attach_workspace:
           at: workspace
       - run: ls workspace/dist/windows
+      - run: echo ${CIRCLE_TAG}
 workflows:
   version: 2
 
