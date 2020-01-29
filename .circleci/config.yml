@@ -100,18 +100,30 @@ jobs:
 workflows:
   version: 2
 
-  main:
+  standard_workflow:
     jobs:
-      - unit_test
-      - e2e_test
+      - unit_test:
+          filters:
+            tags:
+              only: /.*/
+      - e2e_test:
+          filters:
+            tags:
+              only: /.*/
       - build_for_windows:
           requires:
             - unit_test
             - e2e_test
+          filters:
+            tags:
+              only: /.*/
       - build_for_linux:
           requires:
             - unit_test
             - e2e_test
+          filters:
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - build_for_windows
@@ -120,4 +132,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d+\.\d+\.\d+[\-a-z]*$/
+              only: /.*/
