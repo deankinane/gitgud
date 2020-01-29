@@ -117,5 +117,7 @@ workflows:
             - build_for_windows
             - build_for_linux
           filters:
+            branches:
+              ignore: /*/
             tags:
               only: /^\d+\.\d+\.\d+[\-a-z]*$/

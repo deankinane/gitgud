@@ -15,7 +15,8 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "preversion": "yarn test:unit",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push --tags",
+    "patch": "yarn version --prepatch --preid pre-alpha"
   },
   "main": "background.js",
   "dependencies": {
