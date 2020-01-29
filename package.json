@@ -4,7 +4,7 @@
     "name": "Dean Kinane"
   },
   "description": "A different type of Git client",
-  "version": "0.1.0-pre-alpha",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "test:unit": "vue-cli-service test:unit --testMatch **/tests/unit/**/*.spec.ts",
@@ -14,7 +14,7 @@
     "serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "preversion": "yarn test:unit && yarn:test:e2e",
+    "preversion": "yarn test:unit",
     "postversion": "git push && git push --tags"
   },
   "main": "background.js",
