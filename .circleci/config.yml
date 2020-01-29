@@ -76,7 +76,6 @@ jobs:
       - attach_workspace:
           at: workspace
       - run: ls workspace/dist/windows/dist_electron
-      - run: ls workspace/dist/linux/dist_electron
 workflows:
   version: 2
 
