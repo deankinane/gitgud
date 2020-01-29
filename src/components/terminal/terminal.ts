@@ -1,5 +1,5 @@
 import { Terminal as xterm } from "xterm";
-import { spawn as spawnPty } from "node-pty";
+import { spawn as spawnPty } from "node-pty-prebuilt-multiarch";
 
 export default class Terminal {
   private xterm: xterm;
