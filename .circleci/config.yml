@@ -21,7 +21,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn test:unit
+      - run: yarn test:unit --coverage
+      - store_artifacts:
+          path: coverage
 
   e2e_test:
     docker:
@@ -58,7 +60,7 @@ jobs:
           command: mkdir -p workspace/dist/windows
           shell: bash
       - run:
-          command: mv dist_electron/squirrel-windows/*.exe workspace/dist/windows
+          command: mv dist_electron/squirrel-windows/*.* workspace/dist/windows
           shell: bash
       - persist_to_workspace:
           root: workspace
