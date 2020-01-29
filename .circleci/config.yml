@@ -61,7 +61,7 @@ jobs:
           command: mkdir -p workspace/dist/windows
           shell: bash
       - run:
-          command: mv dist_electron workspace/dist/windows
+          command: mv dist_electron/squirrel_windows/*.exe workspace/dist/windows
           shell: bash
       - persist_to_workspace:
           root: workspace
