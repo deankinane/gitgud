@@ -1,15 +1,19 @@
 import { Terminal as xterm } from "xterm";
-import { spawn as spawnPty } from "node-pty-prebuilt-multiarch";
+import { spawn as spawnPty, IPty } from "node-pty-prebuilt-multiarch";
 
 export default class Terminal {
-  private xterm: xterm;
-  private shell: any;
-  private cwd: string = "c:/";
-  private xtermElement?: HTMLElement;
+  xterm: xterm;
+  shell: IPty;
+  cwd: string = "c:/";
 
   constructor(element: HTMLElement, workingDirectory?: string) {
-    this.xtermElement = element;
     this.cwd = workingDirectory || this.cwd;
+
+    this.shell = spawnPty("C:\\Program Files\\Git\\bin\\bash.exe", [], {
+      name: "xterm-color",
+      cwd: this.cwd,
+      env: process.env as { [key: string]: string }
+    });
 
     this.xterm = new xterm({
       cursorStyle: "bar",
@@ -18,17 +22,26 @@ export default class Terminal {
       logLevel: "debug"
     });
 
-    this.xterm.open(this.xtermElement);
+    this.xterm.open(element);
 
-    this.shell = spawnPty("bash.exe", [], {
-      name: "xterm-color",
-      cwd: this.cwd,
-      env: process.env as { [key: string]: string }
-    });
+    this.shell.onData(data => this.onShellData(data));
+    this.xterm.onData(data => this.onXtermData(data));
+  }
 
-    this.shell.on("data", (data: string | Uint8Array) => {
-      this.xterm.write(data);
-    });
-    this.xterm.onData(data => this.shell.write(data));
+  onXtermData(data: string) {
+    this.shell.write(data);
+  }
+
+  onShellData(data: string) {
+    this.xterm.write(data);
+  }
+
+  sendCommand(command: string) {
+    this.shell.write(command + "\r");
+  }
+
+  kill() {
+    this.shell.kill();
+    this.xterm.dispose();
   }
 }

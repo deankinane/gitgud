@@ -1,5 +1,8 @@
 <template>
-  <div data-test-id="terminal-container" ref="terminal-container"></div>
+  <div>
+    <div data-test-id="terminal-container" ref="terminal-container"></div>
+    <button @click="sendTestCommand">test</button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,6 +20,17 @@ export default class TerminalView extends Vue {
     this.terminalShell = new Terminal(
       this.$refs["terminal-container"] as HTMLElement
     );
+  }
+
+  beforeDestroy() {
+    if (this.terminalShell) {
+      this.terminalShell.kill();
+    }
+  }
+
+  sendTestCommand() {
+    if (this.terminalShell)
+      this.terminalShell.sendCommand("echo Hello, World!");
   }
 }
 </script>
