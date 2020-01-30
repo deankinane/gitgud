@@ -3,10 +3,12 @@ import Terminal from "@/components/terminal/terminal";
 describe("terminal.ts", () => {
   let terminal: Terminal;
   let onShellData: jest.SpyInstance;
+  let onXtermData: jest.SpyInstance;
 
   beforeEach(() => {
     terminal = new Terminal(document.createElement("div"));
     onShellData = jest.spyOn(terminal, "onShellData");
+    onXtermData = jest.spyOn(terminal, "onXtermData");
   });
 
   afterEach(() => {
