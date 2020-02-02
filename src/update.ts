@@ -32,7 +32,13 @@ export default function configureUpdater() {
   );
 
   autoUpdater.on("error", message => {
-    console.error("There was a problem updating the application");
-    console.error(message);
+    const dialogOpts = {
+      type: "error",
+      buttons: ["OK"],
+      title: "Application Update Error",
+      message: "There was a problem updating the application",
+      detail: message.message
+    };
+    dialog.showMessageBox(dialogOpts);
   });
 }

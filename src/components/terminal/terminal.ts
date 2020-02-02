@@ -12,6 +12,7 @@ export default class Terminal {
     this.shell = spawnPty("C:\\Program Files\\Git\\bin\\bash.exe", [], {
       name: "xterm-color",
       cwd: this.cwd,
+      useConpty: true,
       env: process.env as { [key: string]: string }
     });
 

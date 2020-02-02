@@ -7,6 +7,7 @@ import {
 } from "vue-cli-plugin-electron-builder/lib";
 import isDevelopment from "electron-is-dev";
 import configureUpdater from "./update";
+import Terminal from "@/components/terminal/terminal";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
