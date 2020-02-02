@@ -14,22 +14,20 @@ export default function configureUpdater() {
     }, 60000);
   }
 
-  autoUpdater.on(
-    "update-downloaded",
-    async (event, releaseNotes, releaseName) => {
-      const dialogOpts = {
-        type: "info",
-        buttons: ["Restart", "Later"],
-        title: "Application Update",
-        message: process.platform === "win32" ? releaseNotes : releaseName,
-        detail:
-          "A new version has been downloaded. Restart the application to apply the updates."
-      };
+  autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: "info",
+      buttons: ["Restart", "Later"],
+      title: "Application Update",
+      message: process.platform === "win32" ? releaseNotes : releaseName,
+      detail:
+        "A new version has been downloaded. Restart the application to apply the updates."
+    };
 
-      const dlgResult = await dialog.showMessageBox(dialogOpts);
-      if (dlgResult === 0) autoUpdater.quitAndInstall();
-    }
-  );
+    dialog.showMessageBox(dialogOpts, response => {
+      if (response === 0) autoUpdater.quitAndInstall();
+    });
+  });
 
   autoUpdater.on("error", message => {
     const dialogOpts = {
