@@ -1,12 +1,17 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, autoUpdater } from "electron";
 import {
   createProtocol,
   installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
+import isDevelopment from "electron-is-dev";
+// const isDevelopment = require("electron-is-dev");
 
-const isDevelopment = process.env.NODE_ENV !== "production";
+// Update server config
+const server = "https://hazel.deankinane.now.sh";
+const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+autoUpdater.setFeedURL({ url: feed });
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -75,6 +80,10 @@ app.on("ready", async () => {
     } catch (e) {
       console.error("Vue Devtools failed to install:", e.toString());
     }
+  } else {
+    setInterval(() => {
+      autoUpdater.checkForUpdates();
+    }, 60000);
   }
   createWindow();
 });
