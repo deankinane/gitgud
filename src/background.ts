@@ -12,6 +12,7 @@ import isDevelopment from "electron-is-dev";
 const server = "https://hazel.deankinane.now.sh";
 const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 autoUpdater.setFeedURL({ url: feed });
+console.log(feed);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
