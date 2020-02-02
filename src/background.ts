@@ -6,13 +6,7 @@ import {
   installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
 import isDevelopment from "electron-is-dev";
-// const isDevelopment = require("electron-is-dev");
-
-// Update server config
-const server = "https://hazel.deankinane.now.sh";
-const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
-autoUpdater.setFeedURL({ url: feed });
-console.log(feed);
+import configureUpdater from "./update";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -81,12 +75,9 @@ app.on("ready", async () => {
     } catch (e) {
       console.error("Vue Devtools failed to install:", e.toString());
     }
-  } else {
-    setInterval(() => {
-      autoUpdater.checkForUpdates();
-    }, 60000);
   }
   createWindow();
+  configureUpdater();
 });
 
 // Exit cleanly on request from parent process in development mode.
