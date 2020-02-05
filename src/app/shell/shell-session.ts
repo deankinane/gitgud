@@ -45,10 +45,8 @@ export class ShellSession {
   }
 
   destroy() {
-    if (this.id) {
-      ipcMain.removeListener(this.id, this.onIpcMain);
-      this.shell.kill();
-    }
+    ipcMain.removeListener(this.id, this.onIpcMain);
+    this.shell.kill();
   }
 }
 
@@ -64,5 +62,11 @@ export default function InitShellSessionListener(win: BrowserWindow) {
     console.log("create-shell: " + data.uid);
     const newSession = new ShellSession(win, data.uid);
     Sessions.push(newSession);
+  });
+}
+
+export function KillAllSessions() {
+  Sessions.forEach(session => {
+    session.destroy();
   });
 }

@@ -7,7 +7,9 @@ import {
 } from "vue-cli-plugin-electron-builder/lib";
 import isDevelopment from "electron-is-dev";
 import configureUpdater from "./update";
-import InitShellSessionListener from "@/app/shell/shell-session";
+import InitShellSessionListener, {
+  KillAllSessions
+} from "@/app/shell/shell-session";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -81,6 +83,10 @@ app.on("ready", async () => {
   }
   createWindow();
   configureUpdater();
+});
+
+app.on("before-quit", (event: Electron.Event) => {
+  KillAllSessions();
 });
 
 // Exit cleanly on request from parent process in development mode.

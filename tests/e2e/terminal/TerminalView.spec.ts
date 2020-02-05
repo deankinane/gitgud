@@ -9,18 +9,22 @@ describe("TerminalView", () => {
   let win: SpectronWindow;
   let client: SpectronClient;
 
-  beforeAll(async () => {
+  beforeEach(async done => {
     server = await testWithSpectron();
     app = server.app;
     win = app.browserWindow;
     client = app.client;
+    done();
   });
 
-  test("Xterm element was created", async () => {
+  test("Xterm element was created", async done => {
     expect(await client.element(".xterm").isExisting()).toBe(true);
+    done();
   });
 
-  afterAll(async () => {
+  afterEach(async done => {
+    await app.stop();
     await server.stopServe();
+    done();
   });
 });

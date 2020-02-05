@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <p>GitGud</p>
     <TerminalView></TerminalView>
   </div>
 </template>
