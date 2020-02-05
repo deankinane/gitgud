@@ -5,7 +5,7 @@ describe("TerminalView.vue", () => {
   let wrapper: Wrapper<TerminalView>;
 
   beforeEach(() => {
-    wrapper = shallowMount(TerminalView);
+    wrapper = shallowMount(TerminalView, { attachToDocument: true });
   });
 
   it("xterm element should be created", () => {
@@ -26,5 +26,9 @@ describe("TerminalView.vue", () => {
     wrapper.vm.$destroy();
 
     expect(killEventEmmitted).toBe(true);
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
   });
 });
