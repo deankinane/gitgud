@@ -1,7 +1,7 @@
 import { testWithSpectron, Server } from "vue-cli-plugin-electron-builder";
 import { Application, SpectronWindow, SpectronClient } from "spectron";
 
-jest.setTimeout(40000);
+jest.setTimeout(60000);
 
 describe("TerminalView", () => {
   let server: Server;
