@@ -23,6 +23,7 @@
     "core-js": "^3.4.4",
     "electron-squirrel-startup": "^1.0.0",
     "node-pty-prebuilt-multiarch": "^0.9.0",
+    "uuid": "^3.4.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@jest-runner/electron": "^2.0.3",
     "@types/jest": "^24.0.19",
+    "@types/uuid": "^3.4.7",
     "@types/webdriverio": "4.13.0",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",

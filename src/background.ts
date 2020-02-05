@@ -7,7 +7,7 @@ import {
 } from "vue-cli-plugin-electron-builder/lib";
 import isDevelopment from "electron-is-dev";
 import configureUpdater from "./update";
-import Terminal from "@/components/terminal/terminal";
+import InitShellSessionListener from "@/app/shell/shell-session";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -27,6 +27,8 @@ function createWindow() {
       nodeIntegration: true
     }
   });
+
+  InitShellSessionListener(win);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

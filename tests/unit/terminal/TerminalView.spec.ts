@@ -1,5 +1,5 @@
 import { shallowMount, Wrapper } from "@vue/test-utils";
-import TerminalView from "@/components/terminal/TerminalView";
+import TerminalView from "@/components/terminal/TerminalView.vue";
 
 describe("TerminalView.vue", () => {
   let wrapper: Wrapper<TerminalView>;
@@ -13,13 +13,18 @@ describe("TerminalView.vue", () => {
   });
 
   it("terminal should be killed when component destroyed", () => {
-    let terminalKill: jest.SpyInstance | undefined;
+    let killEventEmmitted: boolean = false;
 
-    if (wrapper.vm.terminalShell)
-      terminalKill = jest.spyOn(wrapper.vm.terminalShell, "kill");
+    jest
+      .spyOn(wrapper.vm, "emit")
+      .mockImplementation((channel: string, data: string) => {
+        if (channel === "kill") {
+          killEventEmmitted = true;
+        }
+      });
 
     wrapper.vm.$destroy();
 
-    expect(terminalKill).toHaveBeenCalled();
+    expect(killEventEmmitted).toBe(true);
   });
 });
