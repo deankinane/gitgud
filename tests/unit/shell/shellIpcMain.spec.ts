@@ -1,7 +1,7 @@
 import ShellIpcMain from "@/app/shell/shell-ipc-main";
 import { v1 as uuid } from "uuid";
 import IpcPayload from "@/app/shell/shell-ipc-payload";
-import { BrowserWindow } from "tests/mocks/electron-mock";
+import { BrowserWindow } from "tests/unit/mocks/electron-mock";
 
 describe("shell-ipc-main.ts", () => {
   it("sendData() should emit data event", () => {

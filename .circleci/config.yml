@@ -42,7 +42,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn build --dir
-      - run: ls dist_electron/linux-unpacked
       - run: yarn vue-cli-service test:unit --config jest.e2e.config.js --testMatch **/tests/e2e/**/*.spec.ts
 
   build_for_windows:
