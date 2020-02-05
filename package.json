@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "test:unit": "vue-cli-service test:unit --testMatch **/tests/unit/**/*.spec.ts",
-    "test:e2e": "vue-cli-service test:unit --config jest.e2e.config.js --testMatch **/tests/e2e/**/*.spec.ts --forceExit",
+    "test:e2e": "vue-cli-service electron:build  --dir && vue-cli-service test:unit --config jest.e2e.config.js --testMatch **/tests/e2e/**/*.spec.ts",
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service electron:build",
     "serve": "vue-cli-service electron:serve",

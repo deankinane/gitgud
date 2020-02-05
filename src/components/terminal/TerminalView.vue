@@ -37,14 +37,14 @@ export default class TerminalView extends Vue {
       const props: ShellProperties = {
         uid: this.uid
       };
-      console.log("uuid: " + props.uid);
+      //console.log("uuid: " + props.uid);
       ipcRenderer.send("create-shell", props);
     }
   }
 
   emit(channel: string, data: string) {
     if (this.uid) {
-      console.log(channel + ":" + data);
+      //console.log(channel + ":" + data);
       ipcRenderer.send(this.uid, { channel, data });
     }
   }
