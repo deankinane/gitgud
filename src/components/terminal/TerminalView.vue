@@ -1,8 +1,20 @@
 <template>
-  <div>
-    <div data-test-id="terminal-container" ref="terminal-container"></div>
-  </div>
+  <div
+    class="term-container"
+    data-test-id="terminal-container"
+    ref="terminal-container"
+  ></div>
 </template>
+
+<style lang="css">
+.term-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -11,11 +23,13 @@ import { ipcRenderer } from "electron";
 import { v1 as uuid } from "uuid";
 import { ShellProperties } from "@/app/shell/shell-session";
 import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
 
 @Component
 export default class TerminalView extends Vue {
   uid?: string;
   terminal?: Terminal;
+  fitAddon?: FitAddon;
 
   created() {
     this.uid = uuid();
@@ -25,6 +39,8 @@ export default class TerminalView extends Vue {
       windowsMode: true,
       logLevel: "debug"
     });
+    this.fitAddon = new FitAddon();
+    this.terminal.loadAddon(this.fitAddon);
 
     this.terminal.onData(data => this.emit("data", data));
     ipcRenderer.on(this.uid, this.onShellEvent.bind(this));
@@ -33,7 +49,7 @@ export default class TerminalView extends Vue {
   mounted() {
     if (this.uid) {
       this.terminal!.open(this.$refs["terminal-container"] as HTMLElement);
-
+      this.fitAddon!.fit();
       const props: ShellProperties = {
         uid: this.uid
       };

@@ -28,7 +28,8 @@
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
     "vuex": "^3.1.2",
-    "xterm": "^4.3.0"
+    "xterm": "^4.3.0",
+    "xterm-addon-fit": "^0.3.0"
   },
   "devDependencies": {
     "@jest-runner/electron": "^2.0.3",
