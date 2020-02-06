@@ -120,7 +120,6 @@ export default class TerminalView extends Vue {
       return;
     }
     if (this.terminal!) {
-      console.log(cols + " : " + rows);
       this.terminal!.resize(cols, rows);
       this.terminal!.element!.style.width = dimension.width + "px";
     }
