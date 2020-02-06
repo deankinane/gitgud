@@ -1,18 +1,32 @@
 <template>
-  <div
-    class="term-container"
-    data-test-id="terminal-container"
-    ref="terminal-container"
-  ></div>
+  <div ref="root" class="terminal-outer-container" data-colour="terminal-bg">
+    <div ref="char-measure-element"></div>
+    <div
+      class="integrated-terminal"
+      data-test-id="terminal-container"
+      ref="terminal-container"
+    ></div>
+  </div>
 </template>
 
 <style lang="css">
-.term-container {
+.terminal-outer-container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  padding-left: 10px;
+}
+
+.integrated-terminal {
+  height: 100%;
+}
+
+.integrated-terminal .xterm {
+  position: absolute;
+  bottom: 0;
+  top: 0;
 }
 </style>
 
@@ -21,46 +35,50 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { ipcRenderer } from "electron";
 import { v1 as uuid } from "uuid";
-import { ShellProperties } from "@/app/shell/shell-session";
+import { ShellProperties } from "@/components/terminal/sessions";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import os from "os";
+import { Dimension, measureFont } from "@/components/terminal/terminal-helpers";
+import { applyColours } from "@/app/config/colours";
 
 @Component
 export default class TerminalView extends Vue {
   uid?: string;
   terminal?: Terminal;
-  fitAddon?: FitAddon;
+  charMeasureElement?: HTMLElement;
 
   created() {
     this.uid = uuid();
     this.terminal = new Terminal({
       cursorStyle: "bar",
       disableStdin: false,
-      windowsMode: true,
+      windowsMode: os.platform() === "win32",
       logLevel: "debug"
     });
-    this.fitAddon = new FitAddon();
-    this.terminal.loadAddon(this.fitAddon);
 
     this.terminal.onData(data => this.emit("data", data));
     ipcRenderer.on(this.uid, this.onShellEvent.bind(this));
   }
 
   mounted() {
+    this.charMeasureElement = this.$refs["char-measure-element"] as HTMLElement;
     if (this.uid) {
-      this.terminal!.open(this.$refs["terminal-container"] as HTMLElement);
-      this.fitAddon!.fit();
+      const container = this.$refs["terminal-container"] as HTMLElement;
+      this.terminal!.open(container);
+
       const props: ShellProperties = {
         uid: this.uid
       };
-      //console.log("uuid: " + props.uid);
       ipcRenderer.send("create-shell", props);
+      this.layout(new Dimension(container.clientWidth, container.clientHeight));
     }
+
+    applyColours(this.$refs["root"] as HTMLElement);
   }
 
-  emit(channel: string, data: string) {
+  emit(channel: string, data: any) {
     if (this.uid) {
-      //console.log(channel + ":" + data);
       ipcRenderer.send(this.uid, { channel, data });
     }
   }
@@ -87,6 +105,30 @@ export default class TerminalView extends Vue {
 
   beforeDestroy() {
     this.emit("kill", "");
+  }
+
+  layout(dimension: Dimension): void {
+    let fontDimension = measureFont(
+      this.terminal!.getOption("fontFamily"),
+      this.terminal!.getOption("fontSize"),
+      this.terminal!.getOption("lineHeight"),
+      this.charMeasureElement!
+    );
+    let cols = Math.floor(dimension.width / fontDimension.width);
+    let rows = Math.floor(dimension.height / fontDimension.height);
+    if (cols <= 0 || rows <= 0) {
+      return;
+    }
+    if (this.terminal!) {
+      console.log(cols + " : " + rows);
+      this.terminal!.resize(cols, rows);
+      this.terminal!.element!.style.width = dimension.width + "px";
+    }
+
+    this.emit("resize", {
+      cols: cols,
+      rows: rows
+    });
   }
 }
 </script>

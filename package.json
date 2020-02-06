@@ -16,7 +16,8 @@
     "postuninstall": "electron-builder install-app-deps",
     "preversion": "yarn test:unit",
     "postversion": "git push --tags",
-    "patch": "yarn version --prepatch --preid alpha"
+    "patch": "yarn version --prepatch --preid alpha",
+    "defs": "vuetype src/components"
   },
   "main": "background.js",
   "dependencies": {

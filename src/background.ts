@@ -1,15 +1,16 @@
 "use strict";
 
-import { app, protocol, BrowserWindow, autoUpdater } from "electron";
+import { app, protocol, BrowserWindow } from "electron";
 import {
   createProtocol,
   installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
 import isDevelopment from "electron-is-dev";
 import configureUpdater from "./update";
-import InitShellSessionListener, {
+import {
+  InitShellSessionListener,
   KillAllSessions
-} from "@/app/shell/shell-session";
+} from "@/components/terminal/sessions";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

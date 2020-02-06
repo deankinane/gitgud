@@ -36,6 +36,8 @@ export class ShellSession {
         break;
       case "kill":
         this.destroy();
+      case "resize":
+        this.shell.resize(data.cols, data.rows);
         break;
     }
   }
@@ -48,25 +50,4 @@ export class ShellSession {
     ipcMain.removeListener(this.id, this.onIpcMain);
     this.shell.kill();
   }
-}
-
-export interface ShellProperties {
-  uid: string;
-}
-
-export const Sessions: ShellSession[] = new Array<ShellSession>();
-
-export default function InitShellSessionListener(win: BrowserWindow) {
-  console.log("set up create shell listener");
-  ipcMain.on("create-shell", (event: string, data: ShellProperties) => {
-    console.log("create-shell: " + data.uid);
-    const newSession = new ShellSession(win, data.uid);
-    Sessions.push(newSession);
-  });
-}
-
-export function KillAllSessions() {
-  Sessions.forEach(session => {
-    session.destroy();
-  });
 }
