@@ -21,12 +21,9 @@ export function measureFont(
   style.fontSize = fontSize + "px";
   style.height = "auto";
   charMeasureElement.innerText = "X";
-  console.log(charMeasureElement);
   let rect = charMeasureElement.getBoundingClientRect();
-  console.log(rect);
   style.display = "none";
   let charWidth = Math.ceil(rect.width);
   let charHeight = Math.ceil(rect.height);
-  console.log("font " + charWidth + " : " + charHeight);
   return new Dimension(charWidth, charHeight);
 }
