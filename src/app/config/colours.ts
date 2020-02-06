@@ -12,7 +12,6 @@ export function getColour(name: colourName): string | undefined {
 }
 
 export function applyColours(el: HTMLElement) {
-  console.log(el.dataset.colour);
   if (el.dataset.colour) {
     el.style.backgroundColor =
       getColour(el.dataset.colour as colourName) || el.style.backgroundColor;

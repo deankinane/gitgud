@@ -29,7 +29,6 @@ export class ShellSession {
   }
 
   onIpcMain(event: any, { channel, data }: { channel: string; data: any }) {
-    console.log(channel + ":" + data);
     switch (channel) {
       case "data":
         this.shell.write(data);

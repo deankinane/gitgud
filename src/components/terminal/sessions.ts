@@ -9,7 +9,6 @@ export const Sessions: ShellSession[] = new Array<ShellSession>();
 
 export function InitShellSessionListener(win: BrowserWindow) {
   ipcMain.on("create-shell", (event: string, data: ShellProperties) => {
-    console.log("create-shell: " + data.uid);
     const newSession = new ShellSession(win, data.uid);
     Sessions.push(newSession);
   });
