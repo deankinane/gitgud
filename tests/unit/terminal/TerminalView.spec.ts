@@ -28,6 +28,10 @@ describe("TerminalView.vue", () => {
     expect(killEventEmmitted).toBe(true);
   });
 
+  it("resize() should make set the terminal size correctly", () => {
+    //wrapper.find("")
+  });
+
   afterEach(() => {
     wrapper.destroy();
   });

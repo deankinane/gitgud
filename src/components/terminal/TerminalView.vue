@@ -28,6 +28,18 @@
   bottom: 0;
   top: 0;
 }
+/* 
+.integrated-terminal .xterm .xterm-viewport {
+  margin-right: -20px;
+} */
+
+.integrated-terminal .xterm .xterm-screen canvas {
+  position: absolute;
+  right: -20px;
+  bottom: 0;
+  left: 0;
+  top: auto;
+}
 </style>
 
 <script lang="ts">
@@ -38,7 +50,6 @@ import { v1 as uuid } from "uuid";
 import { ShellProperties } from "@/components/terminal/sessions";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
-import os from "os";
 import { Dimension, measureFont } from "@/components/terminal/terminal-helpers";
 import { applyColours } from "@/app/config/colours";
 
@@ -53,7 +64,7 @@ export default class TerminalView extends Vue {
     this.terminal = new Terminal({
       cursorStyle: "bar",
       disableStdin: false,
-      windowsMode: os.platform() === "win32",
+      windowsMode: true,
       logLevel: "debug"
     });
 
@@ -71,7 +82,8 @@ export default class TerminalView extends Vue {
         uid: this.uid
       };
       ipcRenderer.send("create-shell", props);
-      this.layout(new Dimension(container.clientWidth, container.clientHeight));
+      console.log(container.clientWidth + " : " + container.clientHeight);
+      this.resize(new Dimension(container.clientWidth, container.clientHeight));
     }
 
     applyColours(this.$refs["root"] as HTMLElement);
@@ -107,7 +119,7 @@ export default class TerminalView extends Vue {
     this.emit("kill", "");
   }
 
-  layout(dimension: Dimension): void {
+  resize(dimension: Dimension): void {
     let fontDimension = measureFont(
       this.terminal!.getOption("fontFamily"),
       this.terminal!.getOption("fontSize"),
