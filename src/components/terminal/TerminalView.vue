@@ -28,10 +28,6 @@
   bottom: 0;
   top: 0;
 }
-/* 
-.integrated-terminal .xterm .xterm-viewport {
-  margin-right: -20px;
-} */
 
 .integrated-terminal .xterm .xterm-screen canvas {
   position: absolute;

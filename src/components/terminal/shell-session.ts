@@ -6,6 +6,7 @@ export class ShellSession {
   id: string;
   shell: IPty;
   cwd: string = "/c/dev/repos";
+  active: boolean;
 
   constructor(win: BrowserWindow, uid: string) {
     this.win = win;
@@ -20,6 +21,8 @@ export class ShellSession {
 
     this.shell.onData(data => this.emit("data", data));
     ipcMain.on(uid, this.onIpcMain.bind(this));
+
+    this.active = true;
 
     this.emit("ready", {});
   }
@@ -47,6 +50,8 @@ export class ShellSession {
 
   destroy() {
     ipcMain.removeListener(this.id, this.onIpcMain);
+    this.shell.write("exit");
     this.shell.kill();
+    this.active = false;
   }
 }

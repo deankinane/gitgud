@@ -1,5 +1,6 @@
 import { shallowMount, Wrapper } from "@vue/test-utils";
 import TerminalView from "@/components/terminal/TerminalView.vue";
+import { Dimension } from "@/components/terminal/terminal-helpers";
 
 describe("TerminalView.vue", () => {
   let wrapper: Wrapper<TerminalView>;
@@ -29,7 +30,9 @@ describe("TerminalView.vue", () => {
   });
 
   it("resize() should make set the terminal size correctly", () => {
-    //wrapper.find("")
+    wrapper.vm.resize(new Dimension(500, 500));
+    const width = wrapper.find(".xterm").element.clientWidth;
+    expect(width).toBe(500);
   });
 
   afterEach(() => {
