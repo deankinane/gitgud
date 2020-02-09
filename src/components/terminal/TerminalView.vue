@@ -78,7 +78,6 @@ export default class TerminalView extends Vue {
         uid: this.uid
       };
       ipcRenderer.send("create-shell", props);
-      console.log(container.clientWidth + " : " + container.clientHeight);
       this.resize(new Dimension(container.clientWidth, container.clientHeight));
     }
 
