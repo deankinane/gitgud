@@ -50,7 +50,7 @@ export class ShellSession {
 
   destroy() {
     ipcMain.removeListener(this.id, this.onIpcMain);
-    this.shell.write("exit");
+    //this.shell.write("exit");
     this.shell.kill();
     this.active = false;
   }

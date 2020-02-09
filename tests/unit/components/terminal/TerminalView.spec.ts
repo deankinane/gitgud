@@ -29,12 +29,6 @@ describe("TerminalView.vue", () => {
     expect(killEventEmmitted).toBe(true);
   });
 
-  it("resize() should make set the terminal size correctly", () => {
-    wrapper.vm.resize(new Dimension(500, 500));
-    const width = wrapper.find(".xterm").element.clientWidth;
-    expect(width).toBe(500);
-  });
-
   afterEach(() => {
     wrapper.destroy();
   });

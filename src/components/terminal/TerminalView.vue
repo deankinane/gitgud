@@ -16,7 +16,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding-left: 10px;
 }
 
 .integrated-terminal {
@@ -27,6 +26,8 @@
   position: absolute;
   bottom: 0;
   top: 0;
+  left: 10px;
+  right: 0;
 }
 
 .integrated-terminal .xterm .xterm-screen canvas {
@@ -41,7 +42,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, Rectangle } from "electron";
 import { v1 as uuid } from "uuid";
 import { ShellProperties } from "@/components/terminal/sessions";
 import { Terminal } from "xterm";
@@ -54,6 +55,8 @@ export default class TerminalView extends Vue {
   uid?: string;
   terminal?: Terminal;
   charMeasureElement?: HTMLElement;
+  containerElement?: HTMLElement;
+  resizeDelayTimer?: NodeJS.Timeout;
 
   created() {
     this.uid = uuid();
@@ -66,19 +69,23 @@ export default class TerminalView extends Vue {
 
     this.terminal.onData(data => this.emit("data", data));
     ipcRenderer.on(this.uid, this.onShellEvent.bind(this));
+    ipcRenderer.on("window-resized", () => {
+      this.resizeToFitAvailableSpace();
+    });
   }
 
   mounted() {
     this.charMeasureElement = this.$refs["char-measure-element"] as HTMLElement;
+    this.containerElement = this.$refs["terminal-container"] as HTMLElement;
+
     if (this.uid) {
-      const container = this.$refs["terminal-container"] as HTMLElement;
-      this.terminal!.open(container);
+      this.terminal!.open(this.containerElement);
 
       const props: ShellProperties = {
         uid: this.uid
       };
       ipcRenderer.send("create-shell", props);
-      this.resize(new Dimension(container.clientWidth, container.clientHeight));
+      this.resizeToFitAvailableSpace();
     }
 
     applyColours(this.$refs["root"] as HTMLElement);
@@ -114,6 +121,18 @@ export default class TerminalView extends Vue {
     this.emit("kill", "");
   }
 
+  resizeToFitAvailableSpace() {
+    clearTimeout(this.resizeDelayTimer!);
+    this.resizeDelayTimer = setTimeout(() => {
+      this.resize(
+        new Dimension(
+          this.containerElement!.clientWidth,
+          this.containerElement!.clientHeight
+        )
+      );
+    }, 500);
+  }
+
   resize(dimension: Dimension): void {
     let fontDimension = measureFont(
       this.terminal!.getOption("fontFamily"),
@@ -128,7 +147,6 @@ export default class TerminalView extends Vue {
     }
     if (this.terminal!) {
       this.terminal!.resize(cols, rows);
-      this.terminal!.element!.style.width = dimension.width + "px";
     }
 
     this.emit("resize", {

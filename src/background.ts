@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import {
   createProtocol,
   installVueDevtools
@@ -11,6 +11,7 @@ import {
   InitShellSessionListener,
   KillAllSessions
 } from "@/components/terminal/sessions";
+import { Dimension } from "./components/terminal/terminal-helpers";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -45,6 +46,10 @@ function createWindow() {
 
   win.on("closed", () => {
     win = null;
+  });
+
+  win.on("resize", () => {
+    win!.webContents.send("window-resized");
   });
 }
 
