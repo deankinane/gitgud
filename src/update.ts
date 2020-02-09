@@ -14,16 +14,16 @@ export default function configureUpdater() {
     }, 60000);
   }
 
-  autoUpdater.on("update-available", () => {
-    const dialogOpts = {
-      type: "info",
-      buttons: ["OK"],
-      title: "Application Update Available",
-      message: "There is an update available.",
-      detail: "A new version is being downloaded."
-    };
-    dialog.showMessageBox(dialogOpts);
-  });
+  // autoUpdater.on("update-available", () => {
+  //   const dialogOpts = {
+  //     type: "info",
+  //     buttons: ["OK"],
+  //     title: "Application Update Available",
+  //     message: "There is an update available.",
+  //     detail: "A new version is being downloaded."
+  //   };
+  //   dialog.showMessageBox(dialogOpts);
+  // });
 
   autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
     const dialogOpts = {
