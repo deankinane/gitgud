@@ -5,6 +5,7 @@
       class="integrated-terminal"
       data-test-id="terminal-container"
       ref="terminal-container"
+      @contextmenu.prevent="onRightClick"
     ></div>
   </div>
 </template>
@@ -42,7 +43,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ipcRenderer, Rectangle } from "electron";
+import { ipcRenderer, Rectangle, clipboard } from "electron";
 import { v1 as uuid } from "uuid";
 import { ShellProperties } from "@/components/terminal/sessions";
 import { Terminal } from "xterm";
@@ -68,10 +69,10 @@ export default class TerminalView extends Vue {
     });
 
     this.terminal.onData(data => this.emit("data", data));
+    this.terminal.onSelectionChange(this.onSelection.bind(this));
+
     ipcRenderer.on(this.uid, this.onShellEvent.bind(this));
-    ipcRenderer.on("window-resized", () => {
-      this.resizeToFitAvailableSpace();
-    });
+    ipcRenderer.on("window-resized", this.resizeToFitAvailableSpace.bind(this));
   }
 
   mounted() {
@@ -153,6 +154,17 @@ export default class TerminalView extends Vue {
       cols: cols,
       rows: rows
     });
+  }
+
+  onRightClick(e: MouseEvent) {
+    this.terminal!.paste(clipboard.readText("clipboard"));
+  }
+
+  onSelection() {
+    if (this.terminal!.hasSelection()) {
+      clipboard.writeText(this.terminal!.getSelection());
+      console.log(this.terminal!.getSelection());
+    }
   }
 }
 </script>
