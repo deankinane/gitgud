@@ -163,7 +163,6 @@ export default class TerminalView extends Vue {
   onSelection() {
     if (this.terminal!.hasSelection()) {
       clipboard.writeText(this.terminal!.getSelection());
-      console.log(this.terminal!.getSelection());
     }
   }
 }
